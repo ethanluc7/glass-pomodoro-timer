@@ -1,0 +1,332 @@
+@import "tailwindcss";
+
+:root {
+  --accent-h: 32;
+  --accent-s: 85%;
+  --accent-l: 58%;
+  --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --accent-glow: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.25);
+  --accent-subtle: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.12);
+}
+
+[data-mode="focus"] {
+  --accent-h: 32;
+  --accent-s: 85%;
+  --accent-l: 58%;
+}
+
+[data-mode="short-break"] {
+  --accent-h: 168;
+  --accent-s: 55%;
+  --accent-l: 52%;
+}
+
+[data-mode="long-break"] {
+  --accent-h: 255;
+  --accent-s: 50%;
+  --accent-l: 65%;
+}
+
+body {
+  background: #0a0a0e url('/bg.png') center / cover no-repeat fixed;
+  min-height: 100vh;
+  color: #ffffff;
+  font-family: 'Syne', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════
+   FROSTED GLASS SYSTEM
+   Uses ::before with a blurred copy of
+   the background image. Works everywhere.
+   ══════════════════════════════════════ */
+
+/* Small inline glass elements (pills, buttons, badges) */
+.glass-pill {
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.25),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
+    0 6px 24px rgba(0, 0, 0, 0.12);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.glass-pill::before {
+  content: '';
+  position: absolute;
+  inset: -80px;
+  background: url('/bg.png') center / cover no-repeat fixed;
+  filter: blur(50px) saturate(1.4) brightness(1.05);
+  z-index: -2;
+}
+
+.glass-pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 245, 215, 0.15) 0%,
+    rgba(245, 235, 200, 0.10) 50%,
+    rgba(235, 225, 195, 0.06) 100%
+  );
+  z-index: -1;
+}
+
+/* Large glass surfaces (cards, panels, timer) */
+.glass-card {
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25),
+    0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: -100px;
+  background: url('/bg.png') center / cover no-repeat fixed;
+  filter: blur(60px) saturate(1.3) brightness(1.08);
+  z-index: -2;
+}
+
+.glass-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    170deg,
+    rgba(255, 248, 225, 0.12) 0%,
+    rgba(250, 240, 215, 0.08) 40%,
+    rgba(240, 232, 210, 0.05) 100%
+  );
+  z-index: -1;
+  border-radius: inherit;
+}
+
+/* ══════════════════════════════════════
+   TIMER
+   ══════════════════════════════════════ */
+
+.timer-display {
+  font-family: 'Cormorant', serif;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Progress Ring */
+.progress-ring {
+  transform: rotate(-90deg);
+  filter: drop-shadow(0 0 12px var(--accent-glow));
+  transition: filter 0.5s ease;
+}
+
+.progress-ring--running {
+  filter: drop-shadow(0 0 20px var(--accent-glow)) drop-shadow(0 0 40px var(--accent-glow));
+}
+
+.progress-ring__track {
+  stroke: rgba(255, 255, 255, 0.06);
+  fill: none;
+}
+
+.progress-ring__fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1), stroke 1.5s ease;
+}
+
+/* Running pulse dot */
+@keyframes gentlePulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.running-indicator {
+  animation: gentlePulse 2s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════
+   TAB / BUTTON STATES
+   ══════════════════════════════════════ */
+
+.tab-active {
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.3),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+    0 6px 24px rgba(0, 0, 0, 0.15),
+    0 0 0 1px var(--accent-subtle);
+}
+
+.mode-message {
+  transition: opacity 0.5s ease;
+}
+
+/* Start/Pause hover glow */
+.btn-glow:hover {
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.3),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+    0 6px 24px rgba(0, 0, 0, 0.15),
+    0 0 16px var(--accent-subtle);
+}
+
+/* ══════════════════════════════════════
+   INPUTS & FORM ELEMENTS
+   ══════════════════════════════════════ */
+
+.input-glow:focus {
+  box-shadow: 0 0 0 1px var(--accent-subtle),
+              0 0 20px hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.06);
+}
+
+/* ══════════════════════════════════════
+   SESSION COUNTER DOTS
+   ══════════════════════════════════════ */
+
+.session-dot--filled {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.session-dot--current {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 1px var(--accent-subtle);
+}
+
+.session-dot--empty {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ══════════════════════════════════════
+   SETTINGS PANEL
+   ══════════════════════════════════════ */
+
+@keyframes settingsFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes settingsSlideIn {
+  from { opacity: 0; transform: scale(0.97) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.settings-backdrop {
+  animation: settingsFadeIn 0.2s ease;
+}
+
+.settings-panel-enter {
+  animation: settingsSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.settings-number-input::-webkit-inner-spin-button,
+.settings-number-input::-webkit-outer-spin-button {
+  opacity: 0.3;
+}
+
+.settings-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  height: 20px;
+}
+
+.settings-range::-webkit-slider-track {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1px;
+}
+
+.settings-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  margin-top: -5px;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+.settings-range::-webkit-slider-thumb:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.settings-range::-moz-range-track {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1px;
+  border: none;
+}
+
+.settings-range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  border: none;
+}
+
+/* ══════════════════════════════════════
+   TASK LIST
+   ══════════════════════════════════════ */
+
+.task-item--active {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 2px solid var(--accent);
+  padding-left: 10px;
+}
+
+.task-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ══════════════════════════════════════
+   REPORTS
+   ══════════════════════════════════════ */
+
+.reports-bar {
+  transition: opacity 0.2s ease;
+}
+
+.reports-bar:hover {
+  opacity: 0.9 !important;
+}
+
+.reports-bar-label {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+g:hover .reports-bar-label {
+  opacity: 1;
+}
+
+/* ══════════════════════════════════════
+   ENTRANCE ANIMATION
+   ══════════════════════════════════════ */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.fade-in-delay-1 { animation-delay: 0.08s; }
+.fade-in-delay-2 { animation-delay: 0.16s; }
+.fade-in-delay-3 { animation-delay: 0.24s; }
+.fade-in-delay-4 { animation-delay: 0.32s; }
+.fade-in-delay-5 { animation-delay: 0.40s; }
