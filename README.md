@@ -1,4 +1,4 @@
-# Glass Pomodoro
+# Glass Pomodoro Timer
 
 A Pomodoro timer with a glassmorphism-style UI: focus / short break / long break, task list, simple reports, and optional sign-in in order to save your data.
 
